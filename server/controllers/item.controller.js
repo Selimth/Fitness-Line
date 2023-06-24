@@ -15,9 +15,9 @@ const {User,Exercice} = require('../database-mongo/Item.model.js');
         }
         ,
         addUser:async (req,res)=>{
-            const {username,weight,height,target}=req.body
+            const {username,weight,height,target,password,goal}=req.body
             try{
-               const user= await User.create({username,weight,height,target})
+               const user= await User.create({username,password,weight,height,target,goal})
                res.status(201).send(user)
                 }
             
@@ -27,7 +27,7 @@ const {User,Exercice} = require('../database-mongo/Item.model.js');
         },
         addExerciceToUser:async (req,res)=>{
             try{ 
-               const findUser= await User.findOne({_id:req.params.id})
+               const findUser= await User.findOne({_id:req.params.idUs})
                if(findUser){
                 findUser.exercices.push(req.body.id)
                 await findUser.save()
@@ -44,9 +44,9 @@ const {User,Exercice} = require('../database-mongo/Item.model.js');
                 res.status(500).send(err)
             }
     },
-    getOneExercice: async (req,res)=>{
+    getOneUser: async (req,res)=>{
         try{
-            const oneUser= await Exercice.findOne({_id:req.params.id})
+            const oneUser= await User.findOne({_id:req.params.idUs})
             res.status(200).send(oneUser)
         }
         catch(err){
@@ -55,21 +55,11 @@ const {User,Exercice} = require('../database-mongo/Item.model.js');
     },
     deleteExerciceFromUser:async (req,res)=>{
         try{ 
-           const findUser= await User.findOne({_id:req.params.idUs})
-           if(findUser){
-            for(var elements of findUser.exercices){
-                console.log(elements);
-            }
-            // await findUser.save()
-            res.status(201).send(findUser)
+            console.log("idUs",req.params.idUs);
+            console.log("idEx",req.params.idEx);
+           const userFind= await User.findOneAndUpdate({_id:req.params.idUs},{$pull:{exercices:req.params.idEx}})
+            res.status(201).send("Updated Successfully")
            }
-           else{
-            res.status(401).send("User not found")
-           }
-        
-            
-        } 
-        
         catch(err){
             res.status(500).send(err)
         }

@@ -10,9 +10,11 @@ const ExercicesSchema=new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
   username: {type:String,unique:true},
+  password:String,
   weight: Number,
   height: Number,
   target: Number,
+  goal:{type:String,enum:["gain","lose_fat"]},
   calories:Number,
   caloriesLeft:Number,
   exercices:[{type:mongoose.Types.ObjectId,ref:"Exercice"}]
