@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const mongoUri = "mongodb://127.0.0.1/mvp";
+mongoose.set('strictQuery', false)
+const mongoUri = "mongodb://127.0.0.1/Fitness-Line";
 
 mongoose.connect(mongoUri, { useUnifiedTopology: true, useNewUrlParser: true }, () => {
   console.log("db connected");
