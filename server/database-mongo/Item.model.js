@@ -14,7 +14,9 @@ const UserSchema = new mongoose.Schema({
   weight: Number,
   height: Number,
   target: Number,
-  goal:{type:String,enum:["gain","lose_fat"]},
+  gender:{type:String,enum:["male","female"]},
+  age:Number,
+  goal:{type:String,enum:["gain","lose"]},
   calories:Number,
   caloriesLeft:Number,
   exercices:[{type:mongoose.Types.ObjectId,ref:"Exercice"}]

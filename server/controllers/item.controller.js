@@ -15,9 +15,9 @@ const {User,Exercice} = require('../database-mongo/Item.model.js');
         }
         ,
         addUser:async (req,res)=>{
-            const {username,weight,height,target,password,goal}=req.body
+            const {username,weight,height,target,password,goal,age,gender,calories,caloriesLeft}=req.body
             try{
-               const user= await User.create({username,password,weight,height,target,goal})
+               const user= await User.create({username,password,weight,height,target,age,gender,goal,calories,caloriesLeft})
                res.status(201).send(user)
                 }
             
@@ -44,10 +44,10 @@ const {User,Exercice} = require('../database-mongo/Item.model.js');
                 res.status(500).send(err)
             }
     },
-    getOneUser: async (req,res)=>{
+    getAllUsers: async (req,res)=>{
         try{
-            const oneUser= await User.findOne({_id:req.params.idUs})
-            res.status(200).send(oneUser)
+            const users= await User.find()
+            res.status(200).send(users)
         }
         catch(err){
             res.status(500).send(err)
