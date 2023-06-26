@@ -37,7 +37,7 @@ const App = () => {
   //! Update Calories based on what the user consumes
   const updateCalories = (id, calories) => {
     axios.put(`http://localhost:3000/api/Fitness-Line/caloriesLeft/${id}`, calories)
-      .then((response) => { setRefresh(!refresh); })
+      .then((response) => setRefresh(!refresh))
       .catch((err) => console.log(err))
   }
 
