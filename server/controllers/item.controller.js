@@ -44,11 +44,33 @@ const {User,Exercice} = require('../database-mongo/Item.model.js');
                 res.status(500).send(err)
             }
     },
+    //!get user's exercices
+     getUserExercices:async(req,res)=>{
+        try{
+            const userdata=await User.findOne({_id:req.params.idUs}).populate("exercices")
+            res.status(200).send(userdata.exercices)
+        }
+        catch(err){
+            res.status(500).send(err)
+        }
+        
+        
+     },
     //! get all users from data base
     getAllUsers: async (req,res)=>{
         try{
             const users= await User.find()
             res.status(200).send(users)
+        }
+        catch(err){
+            res.status(500).send(err)
+        }
+    },
+    //!get all exercices
+    allExercices: async(req,res)=>{
+        try{
+            const exercices=await Exercice.find({})
+            res.status(200).send(exercices)
         }
         catch(err){
             res.status(500).send(err)

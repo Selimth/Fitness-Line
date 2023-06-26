@@ -16,6 +16,7 @@ const Signup = ({ addUser, users, setRefresh, refresh, setView, setLogin }) => {
     const personalInfo = { username, password, weight, height, target, age, gender, goal, calories, caloriesLeft }
 
     return (
+
         <div>
             SignUP
             <table className='login-table' >
@@ -135,7 +136,7 @@ const Signup = ({ addUser, users, setRefresh, refresh, setView, setLogin }) => {
                             <input type="button" value="Begin your journey" onClick={() => {
                                 addUser(personalInfo);
                                 setLogin(personalInfo)
-                                setView("profile")
+                                setView("login")
                             }} />
                         </td>
                     </tr>

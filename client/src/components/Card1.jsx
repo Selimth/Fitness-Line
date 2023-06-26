@@ -2,13 +2,10 @@ import React, { useState } from 'react'
 const Card1 = ({ login, updateCalories, users }) => {
     const [caloriesLeft, setCalories] = useState(login[0].caloriesLeft)
     const [consumed, setConsumed] = useState("")
-    console.log("caloriesLeft const", caloriesLeft);
-    console.log("login", login[0].calories);
     const userAfterUpdate = users.filter((user) => {
         return login[0]._id === user._id
     })
 
-    console.log("userafterupadte", userAfterUpdate);
     return (
         <div className="card border-success mb-3" style={{ maxWidth: "18rem" }}>
             <div className="card-header bg-transparent border-success dailycalories ">Daily Calories Left </div>

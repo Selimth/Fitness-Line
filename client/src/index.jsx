@@ -9,8 +9,12 @@ const App = () => {
   const [view, setView] = useState("login")
   const [refresh, setRefresh] = useState(false)
   const [login, setLogin] = useState({})
+  const [exercices, setExercices] = useState([])
+  const [userExercices, setUserExercices] = useState([])
+
   useEffect(() => {
     fetch()
+    allExercices()
   }, [refresh])
   //!fetch data
   const fetch = () => {
@@ -48,8 +52,42 @@ const App = () => {
       .catch((err) => console.log(err))
     setRefresh(!refresh)
   }
+  //! Add exercice to db
+  const addExerciceToDb = (exercice) => {
+    console.log("exercice inside add", exercice);
+    axios.post("http://localhost:3000/api/Fitness-Line/addExercice", exercice)
+      .then((response) => { console.log("Successfully added"); setRefresh(!refresh) })
+      .catch((err) => console.log(err))
+  }
 
-  //! changeView
+  //! Get all exercices from database
+  const allExercices = () => {
+    axios.get("http://localhost:3000/api/Fitness-Line/allExercices")
+      .then((response) => setExercices(response.data))
+      .catch((err) => console.log(err))
+  }
+
+  //!Add exercice to user
+  const addExToUser = (id, exercice) => {
+    axios.put(`http://localhost:3000/api/Fitness-Line/userExercice/${id}`, exercice)
+      .then((res) => { console.log("Updated successfully"), setRefresh(!refresh); getUserEx(id) })
+      .catch((err) => console.log(err))
+  }
+
+  //!Get user exercices
+  const getUserEx = (id) => {
+    axios.get(`http://localhost:3000/api/Fitness-Line/getUserExercice/${id}`)
+      .then((res) => setUserExercices(res.data))
+      .catch((err) => console.log(err))
+  }
+  //!Delete user's exercice
+  const delUserEx = (idUs, idEx) => {
+    axios.delete(`http://localhost:3000/api/Fitness-Line/${idUs}/deleteUserEx/${idEx}`)
+      .then((res) => console.log("Deleted Successfully"), getUserEx(idUs))
+      .catch((err) => console.log(err))
+  }
+
+  //! ChangeView
   if (view === "login") {
     return (
       <div className='main'>
@@ -72,7 +110,7 @@ const App = () => {
     return (
       <div className='main'>
         <div className='profile-container'>
-          <Profile login={login} updateCalories={updateCalories} users={users} setLogin={setLogin} />
+          <Profile setView={setView} delUserEx={delUserEx} login={login} updateCalories={updateCalories} users={users} setLogin={setLogin} addExerciceToDb={addExerciceToDb} exercices={exercices} addExToUser={addExToUser} getUserEx={getUserEx} userExercices={userExercices} />
         </div>
       </div>
     )
