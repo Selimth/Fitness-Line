@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PopUp from './PopUp.jsx'
-const Signup = ({ addUser, users, setRefresh, refresh }) => {
+const Signup = ({ addUser, users, setRefresh, refresh, setView, setLogin }) => {
     const [password, setPassword] = useState("")
     const [username, setUsername] = useState("")
     const [weight, setWeight] = useState("")
@@ -18,21 +18,21 @@ const Signup = ({ addUser, users, setRefresh, refresh }) => {
     return (
         <div>
             SignUP
-            <table className='login-table'>
+            <table className='login-table' >
                 <tbody>
                     <tr>
                         <td>
                             <input type='text' placeholder='Username' minLength="8" maxLength="15" onChange={(e) => {
                                 //! check if username exists
-                                users.map((users) => {
-                                    if (e.target.value.toUpperCase() === users.username.toUpperCase()) {
-                                        setPopUp(true)
+                                for (var i = 0; i < users.length; i++) {
+                                    console.log("true or false", e.target.value.toUpperCase() === users[i].username.toUpperCase());
+                                    if (e.target.value.toUpperCase() === users[i].username.toUpperCase()) {
+                                        return setPopUp(true)
                                     } else {
                                         setUsername(e.target.value)
                                         setPopUp(false)
                                     }
-                                })
-
+                                };
                                 setRefresh(!refresh)
                             }} />
 
@@ -134,6 +134,8 @@ const Signup = ({ addUser, users, setRefresh, refresh }) => {
                         <td>
                             <input type="button" value="Begin your journey" onClick={() => {
                                 addUser(personalInfo);
+                                setLogin(personalInfo)
+                                setView("profile")
                             }} />
                         </td>
                     </tr>

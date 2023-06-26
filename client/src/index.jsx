@@ -8,9 +8,10 @@ const App = () => {
   const [users, setUsers] = useState([])
   const [view, setView] = useState("login")
   const [refresh, setRefresh] = useState(false)
+  const [login, setLogin] = useState({})
   useEffect(() => {
     fetch()
-  }, [])
+  }, [refresh])
   //!fetch data
   const fetch = () => {
     axios.get("http://localhost:3000/api/Fitness-Line/getAllUsers")
@@ -21,8 +22,8 @@ const App = () => {
   //!Check if user exists
   const checkUser = (username, password) => {
     const userinfo = users.filter((user) => user.username === username)
-    console.log("userinfo", userinfo);
     if (userinfo.length !== 0) {
+      setLogin(userinfo)
       if (userinfo[0].password === password) {
         return true
       }
@@ -31,6 +32,13 @@ const App = () => {
     else {
       return false
     }
+  }
+
+  //! Update Calories based on what the user consumes
+  const updateCalories = (id, calories) => {
+    axios.put(`http://localhost:3000/api/Fitness-Line/caloriesLeft/${id}`, calories)
+      .then((response) => { setRefresh(!refresh); })
+      .catch((err) => console.log(err))
   }
 
   //!Make a new user
@@ -46,7 +54,7 @@ const App = () => {
     return (
       <div className='main'>
         <div className='login-container'>
-          <Login checkUser={checkUser} setView={setView} />
+          <Login checkUser={checkUser} setView={setView} setLogin={setLogin} />
         </div>
       </div>
     )
@@ -55,7 +63,7 @@ const App = () => {
     return (
       <div className='main'>
         <div className='signup-container'>
-          <Signup addUser={addUser} users={users} setRefresh={setRefresh} refresh={refresh} />
+          <Signup addUser={addUser} users={users} setRefresh={setRefresh} refresh={refresh} setView={setView} setLogin={setLogin} />
         </div>
       </div>
     )
@@ -64,7 +72,7 @@ const App = () => {
     return (
       <div className='main'>
         <div className='profile-container'>
-          <Profile />
+          <Profile login={login} updateCalories={updateCalories} users={users} setLogin={setLogin} />
         </div>
       </div>
     )
